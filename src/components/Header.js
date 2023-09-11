@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { IMAGE_CDN_URL } from "../config";
 import { Link } from "react-router-dom";
 import useOffline from "../utils/useOffline";
+import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 
 const loggedInUser = () => {
   return true;
@@ -20,8 +22,10 @@ const Title = () => {
 const Header = () => {
   const [isLoggedIn, setLoggedIn] = useState(true);
   const isOffline = useOffline();
+  const { user } = useContext(UserContext);
+  const cartItems = useSelector((store) => store.cart.items);
   return (
-    <div className="header" style={{ backgroundColor: "black" }}>
+    <div className="header" style={{ backgroundColor: "pink" }}>
       <Title />
       <ul>
         <li>
@@ -36,8 +40,11 @@ const Header = () => {
         <li>
           <Link to="/instamart">Instamart</Link>
         </li>
-        <li>Cart</li>
+        <li>
+          <Link to="/cart">Cart- {cartItems.length} items</Link>
+        </li>
       </ul>
+      {user.name}
       <div>
         {isOffline ? (
           <div
